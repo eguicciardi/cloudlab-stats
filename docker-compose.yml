@@ -1,7 +1,7 @@
 services:
   umami:
     image: docker.umami.is/umami-software/umami:3.4.0
-    container_name: umami
+    container_name: cloudlab-umami
     ports:
       - "3000:3000"
     environment:
@@ -17,10 +17,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - cloudlab-network
 
   db:
     image: postgres:15-alpine
-    container_name: umami-db
+    container_name: cloudlab-umami-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -33,6 +35,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - cloudlab-network
 
 volumes:
   umami-db-data:
+
+networks:
+  cloudlab-network:
+    external: true
